@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Dashboard</title>
+
+        <!-- Google stylesheets -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link rel="stylesheet" href="./css/dashboard.css">
+    </head>
+
+    <body>
+        <!-- Nav -->
+        <!-- <div class="navigation">
+            <ul>
+                <li><a href="./index.html">Home</a></li>
+                <li><a href="./settings.html"><i class="material-icons">settings</i></a></li>
+            </ul>
+            <form class="search" method="GET">
+                <input type="text" name="search" class="search browser-default" id="search">
+            </form>
+        </div> -->
+
+        <!-- Main -->
+        <main>
+            <div class="dashboard" id="vue_dashboard">
+                <div class="wrapper">
+                     <!-- SIDEBAR -->
+                     <div class="side">
+                        <div class="bar">
+                            <div class="content">
+                                <ul>
+                                    <li><a href="./index.html">Home</a></li>
+                                    <li><a href="./products.html">Products</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="main">
+                        <!-- ACTIONS -->
+                        <div class="actionbar">
+                            <div>
+                                <filterproducts />
+                            </div>
+
+                            <div class="btn-group">
+                                <a href="./create.html" class="btn-large">Add</a>
+                                <deletebutton @deleteitems='applydelete' v-bind:selectedproducts="selectedproducts" />
+                            </div>
+                        </div>
+
+                        <!-- TABLE -->
+                        <div class="card-panel">
+                            <vuetable @selectitem="doselect" @selectall="getall" v-bind:products="products" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Vue JS -->
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+        <!-- JQuery -->
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+        <!-- Materialize scripts -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/js/materialize.min.js"></script>
+        <script>
+            $(document).ready(function(){
+                // Sidenav
+                $('.sidenav').sidenav();
+                // Scrollspy
+                $('.scrollspy').scrollSpy();
+                // Select
+                $('select').formSelect();
+                // Modals
+                $('.modal').modal();
+            });
+        </script>
+        
+        <script src="./js/settings.js"></script>
+        <script src="./js/dashboard.js"></script>
+    </body>
+</html>

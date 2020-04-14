@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Base template</title>
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link rel="stylesheet" href="./tests/test.css">
+    </head>
+    <body>
+        <main>
+            <div class="dashboard" id="vue_dashboard">
+                <div class="wrapper">
+                <!-- <div class="wrapper show-side-bar"> -->
+                    <!-- SIDEBAR -->
+                    <div class="side">
+                        <div class="bar">
+                            <ul>
+                                <li class="header"><p>Dashboard</p></li>
+                                <li><a href="./index.html">Home</a></li>
+                                <li><a href="./base.html">Base</a></li>
+                                <li><a href="./details2.html">Profile</a></li>
+                                <li><a href="./products2.html">Products</a></li>
+                                <li><a href="./products3.html">Products - cards</a></li>
+                                <li><a href="./create.html">Create</a></li>
+                            </ul>
+                            <div class="bar-footer">
+                                Test
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TOPNAV -->
+                    <div class="topnav">
+                        <div class="nav">
+                            <ul>
+                                <!-- <li class="menu" id="trigger-for-sidebar"><i class="material-icons">menu</i></li> -->
+                                <!-- <sidebartrigger @showsidebar="togglesidebar" /> -->
+                                <li><a href="../settings.html">Account</a></li>
+                                <li><a href="./settings.html">Settings</a></li>
+                                <!-- <li><a href="../settings.html"><i class="material-icons">person</i></a></li>
+                                <li><a href="./settings.html"><i class="material-icons">settings</i></a></li> -->
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- MAIN -->
+                    <div class="main">
+                        <!-- STATISTICS -->
+                        <div class="row">
+                            <div class="statistics">
+                                <div class="col s12 m3 l3">
+                                    <div class="card-panel statistic">
+                                        <div class="title">CTR</div>
+                                        <span class="data">135</span>
+                                    </div>
+                                </div>
+                                <div class="col s12 m3 l3">
+                                    <div class="card-panel statistic">
+                                        <div class="title">Revenue</div>
+                                        <span class="data">115 <span class="metric">GB</span></span>
+                                    </div>
+                                </div>
+                                <div class="col s12 m3 l3">
+                                    <div class="card-panel statistic">
+                                        <div class="title">Technique</div>
+                                        <span class="data">1.3</span>
+                                    </div>
+                                </div>
+                                <div class="col s12 m3 l3">
+                                    <div class="card-panel statistic">
+                                        <div class="title">STDev</div>
+                                        <span class="data">1.34</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- CONTENT -->
+                    </div>
+                </div>
+            </div>
+        </main>
+
+            <!-- JQuery -->
+            <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+            <!-- Vue JS -->
+            <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+            <!-- Materialize scripts -->
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/js/materialize.min.js"></script>
+            <script>
+                $(document).ready(function(){
+                    // Sidenav
+                    $('.sidenav').sidenav();
+                    // Scrollspy
+                    $('.scrollspy').scrollSpy();
+                    // Select
+                    $('select').formSelect();
+                    // Modals
+                    $('.modal').modal();
+                });
+            </script>
+    
+            <script src="./js/dashboard.js"></script>
+    </body>
+</html>

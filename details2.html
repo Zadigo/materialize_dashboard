@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Details</title>
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link rel="stylesheet" href="./tests/test.css">
+        <link rel="stylesheet" href="./css/user_details.css">
+
+        <style>
+            .more_options-enter-active {
+                transition: all .3s ease;
+            }
+            .more_options-enter {
+                opacity: 0;
+                transform: translateY(-15px);
+            }
+            .more_options-enter-to {
+                opacity: 1;
+                transform: translateY(0px);
+            }
+        </style>
+    </head>
+    <body>
+        <main>
+            <div class="dashboard">
+                <div class="wrapper">
+                <!-- <div class="wrapper show-side-bar"> -->
+                    <!-- SIDEBAR -->
+                    <div class="side">
+                        <div class="bar">
+                            <ul>
+                                <li class="header"><p>Dashboard</p></li>
+                                <li><a href="./index.html">Home</a></li>
+                                <li><a href="./base.html">Base</a></li>
+                                <li><a href="./details.html">Details</a></li>
+                                <li><a href="./details2.html">Profile</a></li>
+                                <li><a href="./products2.html">Products</a></li>
+                                <li><a href="./products3.html">Products - cards</a></li>
+                                <li><a href="./create.html">Create</a></li>
+                            </ul>
+                            <div class="bar-footer">
+                                Test
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- TOPNAV -->
+                    <div class="topnav">
+                        <div class="nav">
+                            <ul>
+                                <li class="menu" id="trigger-for-sidebar"><i class="material-icons">menu</i></li>
+                                <li><a href="../settings.html">Account</a></li>
+                                <li><a href="./settings.html">Settings</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- MAIN -->
+                    <div class="main" id="profile_details">
+                        <div class="row">
+                            <!-- PROFILE -->
+                            <div class="col s12 m4 l4">
+                                <!-- BADGES -->
+                                <div class="card-panel badges hide">
+                                    <i class="material-icons star tooltipped" data-position="bottom" data-tooltip="Certified">star</i>
+                                    <i class="material-icons star tooltipped" data-position="bottom" data-tooltip="Certified">check</i>
+                                    <i class="material-icons star tooltipped" data-position="bottom" data-tooltip="Certified">stars</i>
+                                </div>
+
+                                <!-- INFORMATION -->
+                                <div class="card-panel avatar">
+                                    <img src="https://www.w3schools.com/bootstrap4/img_avatar4.png" alt="avatar">
+                                    <div class="details">
+                                        <table class="responsive-table">
+                                            <tbody>
+                                                <tr>
+                                                    <td id="username">Eugénie Bouchard</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>12/12/1987 - Lille, France</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><a href="mailto:eugenieboucard@gmail.com">eugenieboucard@gmail.com</a></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- PRESENTATION -->
+                            <div class="col s12 m8 l8">
+                                <div class="card-panel details">
+                                    <p class="title">Presentation</p>
+                                    <p>
+                                        Lorem ipsum dolor sit amet consectetur 
+                                        adipisicing elit. Sed consequuntur officiis 
+                                        possimus dolor hic reprehenderit. Ut impedit 
+                                        magnam sequi aperiam consectetur, ipsa recusandae 
+                                        eligendi sint doloribus est, dolorum neque 
+                                        voluptates.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="col s12 m8 l8 correct-padding">
+                                <!-- SCORE -->
+                                <div class="col s12 m6 l6">
+                                    <div class="card-panel">
+                                        <div class="title">Score proposition</div>
+                                        <scoreproposition />
+                                    </div>
+                                </div>
+
+                                <!-- SKILLS -->
+                                <div class="col s12 m6 l6">
+                                    <div class="card-panel skills">
+                                        <p class="title">Compétences</p>
+                                        <p>
+                                            <div class="chip">English</div>
+                                            <div class="chip">Spanish</div>
+                                            <div class="chip">7-15</div>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- PDF -->
+                            <div class="col s12 m8 l8 hide">
+                                <div class="card-panel pdf-viewer">
+                                    <object data="http://htbiblio.yolasite.com/resources/Fashion%20Marketing.pdf" type="application/pdf">
+                                        <iframe src="https://docs.google.com/viewer?url=http://htbiblio.yolasite.com/resources/Fashion%20Marketing.pdf&embedded=true" frameborder="0" height="800px" width="100%"></iframe>
+                                    </object>
+                                </div>
+                            </div>
+
+                            <!-- MESSAGING -->
+                            <div class="col s12 m8 l8 hide">
+                                <div class="card-panel tell-us-something">
+                                    <p class="title">Envoyer un message</p>
+                                    <sendmessage />
+                                </div>
+                            </div>
+
+                            <!-- ACTION BUTTONS -->
+                            <div class="col s12 m8 l8">
+                                <actionbuttons />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- VUEJS -->
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+        <!-- JQUERY -->
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+        <!-- MATERIALIZE -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/js/materialize.min.js"></script>
+        <script>
+            $(document).ready(function(){
+                // Sidenav
+                $('.sidenav').sidenav();
+                // Scrollspy
+                $('.scrollspy').scrollSpy();
+                // Select
+                $('select').formSelect();
+                // Modals
+                $('.modal').modal();
+                // Tooltip
+                $('.tooltipped').tooltip();
+            });
+        </script>
+
+        <!-- LODASH -->
+        <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.15/lodash.min.js"></script>
+
+        <script src="./js/details.js"></script>
+    </body>
+</html>

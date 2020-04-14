@@ -1,0 +1,415 @@
+$light_blue: rgba($color: #5c6bc0, $alpha: 1);
+
+@import "../css/fonts.scss";
+
+$soft_shadow: 0 2px 4px 0 rgba(0,0,0,.05);
+
+$theme_color: #3f51b5;
+$background_color: #e8eaf6;
+$hover_color: #f5f5f5;
+$colored_hover_color: #3f51b5;
+$border_color: rgba($color: black, $alpha: .14);
+$not_active_color: #9e9e9e;
+$dark_mode: rgba(0, 0, 0, 1);
+
+html {
+    font-family: "Lato";
+}
+
+[type="checkbox"]:checked+span:not(.lever):before {
+    border-right: 2px solid $theme_color;
+    border-bottom: 2px solid $theme_color;
+}
+
+.switch label input[type=checkbox]:checked+.lever {
+    background-color: $light_blue;
+}
+
+.switch label input[type=checkbox]:checked+.lever:after {
+    background-color: $theme_color;
+}
+
+
+%dashboard_card {
+    border-radius: 5px;
+}
+
+%dashboard_card_clean {
+    @extend %dashboard_card;
+    // border: 1px solid $dark_grey;
+    box-shadow: none;
+}
+
+%setting {
+    line-height: 1.5;
+    padding: 24px;
+    background-color: #fff;
+    border-bottom: 1px solid $border_color;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.col.correct-padding {
+    padding: {
+        right: 0;
+        left: 0;
+    }
+}
+
+.card_items-leave-active,
+.card_items-enter-active {
+    transition: all .2s ease-in;
+}
+
+.card_items-leave,
+.card_items-enter-to {
+    opacity: 1;
+}
+
+.card_items-leave-to,
+.card_items-enter {
+    opacity: 0;
+}
+
+.card_items-move {
+    transition: all .2s ease-out;
+}
+
+.dashboard {
+    background-color: $background_color;
+    transition: all .3s ease-in;
+
+    .btn, .btn-large {
+        background-color: $light_blue;
+    }
+
+    .statistics {
+        .card, .card-panel {
+            @extend %dashboard_card;
+        }
+    }
+
+    .wrapper {
+        display: grid;
+        grid-template-columns: 300px repeat(4, 1fr);
+        grid-template-rows: min-content repeat(4, 1fr);
+        grid-template-areas: 
+        "side topnav topnav topnav topnav"
+        "side main main main main"
+        "side main main main main"
+        "side main main main main"
+        "side main main main main";
+        height: 100vh;
+
+        .btn-group *:not(:last-child) {
+            margin: {
+                right: 1rem;
+            }
+        }
+
+        table {
+            td {
+                a {
+                    color: $theme_color;
+                    cursor: pointer;
+                    &:not(:last-child) {
+                        margin-right: 1.5rem;
+                    }
+                }
+            }
+        }
+
+        &.show-side-bar {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            grid-template-rows: repeat(5 1fr);    
+            grid-template-areas: 
+            "topnav topnav topnav topnav topnav"
+            "main main main main main"
+            "main main main main main"
+            "main main main main main"
+            "main main main main main";
+            height: 100vh;
+
+            // .side {
+            //     display: none;
+            // }
+
+            .topnav {
+                // background-color: blue;
+                grid-area: topnav;
+                grid-column-start: 1;
+                grid-column-end: 6;
+                grid-auto-rows: 3px;
+
+                .nav {
+                    background-color: white;
+                }
+            }
+        }
+
+        .side {
+            grid-area: side;
+            grid-row-start: 1;
+            grid-row-end: 6;
+            // background-color: red;
+
+            .bar {
+                &.with-borders {
+                    border-right: 1px solid $border_color;
+                }
+
+                position: fixed;
+                background-color: white;
+                width: 300px;
+                height: 100vh;
+
+                ul {
+                    display: flex;
+                    flex-direction: column;
+                    margin: 0;
+
+                    li {                        
+                        &.header {
+                            font: {
+                                size: 1.2rem;
+                                weight: 700;
+                            }
+                            text: {
+                                align: center;
+                                transform: uppercase;
+                            }
+                            padding: .25rem;
+                            height: 70px;
+                            border-bottom: 1px solid $border_color;
+                        }
+
+                        a {
+                            display: block;
+                            font-size: 1rem;
+                            color: $not_active_color;
+                            transition: all .3s ease;
+                            padding: 15px 15px;
+                            font-weight: 600;
+
+                            &:hover {
+                                background-color: $hover_color;
+                                color: $colored_hover_color;
+                                border-left: 3px solid $colored_hover_color;
+                            }
+                        }
+
+                        &:hover {
+
+                        }
+                    }
+                }
+
+                .bar-footer {
+                    position: absolute;
+                    bottom: 0;
+                    height: 70px;
+                    width: 300px;
+                    background-color: $theme_color;
+                    padding: 1rem;
+                }
+            }
+        }
+
+        .topnav {
+            // background-color: blue;
+            grid-area: topnav;
+            grid-column-start: 2;
+            grid-column-end: 6;
+
+            .nav {
+                background-color: white;
+                border-bottom: 1px solid $border_color;
+                min-height: 70px;
+                height: 70px;
+                font-size: 14px;
+                overflow: hidden;
+
+                ul {
+                    display: flex;
+                    flex-direction: row;
+                    margin: 0;
+
+                    li {                
+                        a {
+                            display: block;
+                            transition: background-color .3s;
+                            font-size: 1rem;
+                            color: black;
+                            line-height: 70px;
+                            padding: 0px 23px;
+
+                            &:hover {
+                                background-color: $hover_color;
+                            }
+                        }
+
+                        &.menu {
+                            padding: 0px 23px;
+                            text-align: center;
+                            cursor: pointer;
+                            
+                            i {
+                                display: block;
+                                line-height: 70px;
+
+                                &:hover {
+                                    color: $theme_color;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        .main {
+            grid-area: main;
+            padding: 1rem;
+
+            .statistics {
+                .statistic {
+                    .title {
+                        text-transform: uppercase;
+                        font: {
+                            weight: 300;
+                            size: 1.15rem;
+                        }
+                        color: $not_active_color;
+                    }
+                    .data {
+                        font: {
+                            size: 2.25rem;
+                        }
+                        .metric {
+                            font: {
+                                size: 1.3rem;
+                            }
+                            color: $not_active_color;
+                        }
+                    }
+                }
+                .container {
+                    margin: {
+                        left: 0;
+                        right: 0;
+                    };
+                    width: 100%;
+                }
+            }
+
+            .settings-group {
+                $sides: "right", "left", "top", "bottom";
+                // @each $side in $sides {
+                //     border-#{$side}: 1px solid $dark_grey;
+                // }
+            
+                margin: .5rem 0 1rem 0;
+                // box-shadow: $box_shadow;
+                
+                .collapsible {
+                    box-shadow: none;
+                        -webkit-box-shadow: none;
+                    margin: 0;
+                    border: none;
+            
+                    .collapsible-header {
+                        padding: 24px;
+                    }
+
+                    .collapsible-body {
+                        background-color: white;
+                    }
+                }
+            
+                .setting {
+                    @extend %setting;
+                }
+            }    
+        }
+
+        .bottomnav {
+            grid-area: bottomnav;
+        }
+
+        .card-panel.special {
+            padding: 0;
+
+            .header {
+                position: relative;
+                background-color: inherit;
+                border-bottom: 1px solid rgba(160, 160, 160, 0.2);
+                padding: 16px 24px;
+                font-weight: 700;
+                text-transform: uppercase;
+                font-size: 1.2rem;
+                background-color: $light_blue;
+                color: white;
+            }
+
+            .content {
+                padding: 24px;
+            }
+        }
+
+        .card-table {
+            transition: background-color .25s ease;
+
+            table {
+                border-spacing: 0 .55rem;
+                border-collapse: initial;
+
+                thead {
+                    margin-bottom: 1rem;
+                    background-color: $theme_color;
+                    color: white;
+                    border-radius: 2px;
+
+                    th {
+                        text-align: center;
+
+                        &.sortable:hover {
+                            background-color: lightblue;
+                            cursor: pointer;
+                        }
+
+                        &.sorted {
+                            background-color: red;
+                        }
+                    }
+                }
+                
+                tbody {
+                    tr {
+                        background-color: white;
+                        border-radius: 2px;
+                        box-shadow: 0 2px 4px 0 rgba(0,0,0,.05);
+
+                        td {
+                            text-align: center;
+                            a {
+                                color: $theme_color;
+                            }
+                        }
+
+                        &:hover {
+                            background-color: rgba(242,242,242,0.5)
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.form-interface {
+    &.img-form {
+        img {
+            cursor: pointer;
+        }
+    }
+}
