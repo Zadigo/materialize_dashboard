@@ -159,7 +159,8 @@ var deletebutton = {
 
     props: ["selectedproducts"],
     template: "\
-        <a @click='deleteitems' class='btn-large waves-effect waves-light' id='delete_product' :disabled='showdeletebutton'>\
+        <a @click='deleteitems' class='btn-large red waves-effect waves-light'\
+                             id='delete_product' :class='{\"disabled\": showdeletebutton}'>\
             <i class='material-icons left'>delete</i>\
             {{ title }}\
         </a>\
@@ -170,11 +171,21 @@ var deletebutton = {
         }
     },
     computed: {
+        hasselection() {
+            return this.selectedproductsids.length > 0
+        },
+        selectedproductsids() {
+            var ids = []
+            _.forEach(this.$props.selectedproducts, product => {
+                ids.push(product["id"])
+            })
+            return ids
+        },
         showdeletebutton() {
             // Defines if the delete button should be enabled
             // or not --; true if products are selected,
             // otherwise false
-            if (this.$props.selectedproducts.length > 0) {
+            if (this.hasselection === true) {
                 return false
             } else {
                 return true
@@ -183,7 +194,7 @@ var deletebutton = {
     },
     methods: {
         deleteitems: function() {
-            this.$emit('deleteitems')
+            this.$emit("deleteitems")
         }
     }
 }
@@ -195,18 +206,26 @@ var specialtable = {
         <table>\
             <thead>\
                 <tr>\
-                    <th @click='dosort(title.name)' v-if='title.sortable' v-for='title in titles' :key='title.id' class='sortable' :class='{sorted: title.sorted}'>{{ title.name|capitalize }}</th>\
+                    <th><p><label><input @click='selectall' type='checkbox'><span></span></label></p></th>\
+                    <th @click='dosort(title.name)' v-if='title.sortable' v-for='title in titles' \
+                            :key='title.id' class='sortable' :class='{\"sorted\": title.sorted}'>\
+                                {{ title.name|capitalize }}\
+                    </th>\
                     <th v-else>{{ title.name|capitalize }}</th>\
                 </tr>\
             </thead>\
             <tbody>\
                 <tr v-if='!product.deleted' v-for='(product, index) in sortedproducts' :key='product.id'>\
+                    <td><p><label><input @click='selectitem(index)' type='checkbox' :checked='product.selected'><span></span></label></p></td>\
                     <td><a :href='\"./details.html?product=\" + product.id'>{{ product.id }}</a></td>\
                     <td>{{ product.name }}</td>\
                     <td>{{ product.surname }}</td>\
                     <td>{{ product.price|euros }}</td>\
                     <td>\
                         <a :href='\"./update.html?product=\" + product.id'><i class='material-icons'>create</i></a>\
+                    </td>\
+                    <td class='hide'>\
+                        <a><i class='material-icons'><i class='material-icons'>archive</i></a>\
                     </td>\
                     <td>\
                         <a @click='deletesingleitem(product.id)'><i class='material-icons'>delete</i></a>\
@@ -219,14 +238,14 @@ var specialtable = {
     data() {
         return {
             titles: [
-                {id: 1, name: "iD", sortable: true, sorted: false},
+                {id: 1, name: "id", sortable: true, sorted: false},
                 {id: 2, name: "name", sortable: true, sorted: false},
                 {id: 3, name: "surname", sortable: true, sorted: false},
                 {id: 4, name: "price", sortable: true, sorted: false},
                 {id: 5, name: "", sortable: false, sorted: false},
                 {id: 6, name: "", sortable: false, sorted: false}
             ],
-            currentsort: ""
+            currentsort: "initial"
         }
     },
     computed: {
@@ -239,13 +258,14 @@ var specialtable = {
                 }
             })
         },
-        sortedproducts() {
+        sortbyid() {
+            return this.productlist.sort((a, b) => {
+                return a - b
+            })
+        },
+        sortbyword() {
             var self = this
-            var products = [...this.$props.products]
-            if (this.$data.currentsort === "") {
-                return products
-            }
-            var filteredproducts = products.sort(function(a, b) {
+            return self.productlist.sort(function(a, b) {
                 if (a[self.$data.currentsort] < b[self.$data.currentsort]) {
                     return -1
                 }
@@ -254,22 +274,35 @@ var specialtable = {
                 }
                 return 0
             })
-            return filteredproducts
+        },
+        sortedproducts() {
+            var self = this
+            if (self.$data.currentsort === "initial") {
+                return self.productlist
+            }
+            if (self.$data.currentsort === "id") {
+                return self.sortbyid
+            } else {
+                return self.sortbyword
+            }
+        },
+        productlist() {
+            // return [...this.$props.products]
+            return this.$props.products
         }
     },
     methods: {
         dosort: function(filtername) {
-            var self = this
-            self.$data.currentsort = filtername
+            this.$data.currentsort = filtername
         },
         selectitem: function(index) {
-            this.$emit('selectitem', index)
+            this.$emit("selectitem", index)
         },
         selectall: function(index) {
-            this.$emit('selectall')
+            this.$emit("selectall")
         },
         deletesingleitem: function(productid) {
-            this.$emit('deletesingleitem', productid)
+            this.$emit("deletesingleitem", productid)
         }
     },
     filters: {
@@ -420,10 +453,19 @@ var dashboard = new Vue({
         }
     },
     methods: {
+        dodeselect: function() {
+            // Deselects products before
+            // reselecting a single one
+            _.forEach(this.$data.products, function(product) {
+                product.selected = false
+            })
+        },
         doselect: function(index) {
             // Selects a product in the table using
-            // a selectio checkbox
-            this.$data.products[index].selected = !this.$data.products[index].selected
+            // a selection checkbox
+            // this.dodeselect()
+            var product = this.$data.products[index]
+            product.selected = !product.selected
         },
         getall: function() {
             // Selects all the products in the
@@ -434,46 +476,71 @@ var dashboard = new Vue({
                 product.selected = !product.selected
             })
         },
-        applydelete: function() {
-            // Deletes items using the selection
-            // checkboxes in the table
-            this.selectedproducts.forEach(product => {
-                this.$data.products.forEach((actualproduct, index) => {
-                    if (product.id === actualproduct.id) {
+        applydelete: function(productid) {
+            // Deletes the elements from the list of products
+            // before doing the delete on the server
+            // this.selectedproducts.forEach(product => {
+            //     this.$data.products.forEach((actualproduct, index) => {
+            //         if (product.id === actualproduct.id) {
+            //             product.deleted = !product.deleted
+            //         }
+            //     })
+            // })
+            if (typeof(productid) === "number") {
+                this.$data.products.forEach(product => {
+                    if (product.id === productid) {
                         product.deleted = !product.deleted
                     }
                 })
-            })
-            
-            $.ajax({
-                type: "DELETE",
-                url: "http://example.com",
-                data: self.$props.selectedproducts,
-                dataType: "json",
-                success: function (response) {
-                    console.log(response)
-                }
-            });
+            }
+
+            if (typeof(productid) === "object") {
+                this.$data.products.forEach(product => {
+                    this.$data.productid.forEach(id => {
+                        if (product.id === id) {
+                            product.selected = !product.selected
+                        }
+                    })
+                })
+            }
         },
         applydeletesingle: function(productid) {
-            // ALlows the deletionf of a single
+            var self = this
+            // Allows the deletionf of a single
             // item from the table without going
             // through the selection
-            this.$data.products.forEach(product => {
-                if (product.id === productid) {
-                    product.deleted = !product.deleted
-                }
-            })
+            // this.$data.products.forEach(product => {
+            //     if (product.id === productid) {
+            //         product.deleted = !product.deleted
+            //     }
+            // })
 
-            $.ajax({
-                type: "DELETE",
-                url: "http://example.com",
-                data: {csrfmiddlewaretoken: "", reference: ""},
-                dataType: "json",
-                success: function (response) {
-                    console.log(response)
+            var promise = new Promise((resolve, reject) => {
+                var requests = new XMLHttpRequest()
+                var formdata = new FormData()
+                formdata.append("productid", productid)
+
+                requests.open("GET", "https://jsonplaceholder.typicode.com/todos/1")
+                requests.responseType = "json"
+                requests.onloadstart = function() {
+                    // DO SOMETHING
                 }
-            });
+                requests.onload = function(response) {
+                    // DO SOMETHING
+                    if (requests.readyState === 4) {
+                        resolve(requests.response)
+                    }
+                }
+                requests.onloadend = function() {
+                    // DO SOMETHING
+                }
+                requests.send(formdata)
+            })
+            promise.then((response) => {
+                // DO SOMETHING
+                console.log(response)
+                self.applydelete(productid)
+            })
         },
         togglesidebar: function() {
             this.$data.showsidebar = !this.$data.showsidebar

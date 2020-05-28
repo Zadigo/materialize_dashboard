@@ -65,12 +65,12 @@
                         <div class="card-panel special hide">
                             <div class="header">Products</div>
                             <div class="content">
-                                <vuetable @selectitem="doselect" @selectall="getall" @deletesingleitem="applydeletesingle" v-bind:products="products" />
+                                <!-- <vuetable @selectitem="doselect" @selectall="getall" @deletesingleitem="applydeletesingle" v-bind:products="products" /> -->
                             </div>
                         </div>
 
                         <div class="special-table">
-                            <specialtable @deletesingleitem="applydeletesingle" v-bind:products="products" />
+                            <specialtable @deletesingleitem="applydeletesingle" @selectall="getall" @selectitem="doselect" v-bind:products="products" />
                         </div>
                     </div>
                 </div>
@@ -97,6 +97,9 @@
                     $('.modal').modal();
                 });
             </script>
+
+            <!-- LODASH -->
+            <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.15/lodash.min.js"></script>
 
             <script src="./js/forms.js"></script>
             <script src="./js/settings.js"></script>

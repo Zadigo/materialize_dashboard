@@ -13,18 +13,49 @@ var currentpagefields = [
     ]}
 ]
 
+var imagesupload = {
+    template: "\
+    <div class='row'>\
+        <div v-for='input in inputs' :key='input.id' class='col s4 m4 l4'>\
+            <img src='https://via.placeholder.com/800' class='responsive-img' alt=''>\
+            <div class='input-file'>\
+                <input type='file' name='image' id='image'>\
+            </div>\
+        </div>\
+    </div>\
+    ",
+    data() {
+        return {
+            inputs: [
+                {id: 1, name: "image1"},
+                {id: 2, name: "image2"},
+                {id: 3, name: "image3"}
+            ]
+        }
+    }
+}
+
 var imageupload = {
     template: "\
     <div class='form-interface img-form'>\
         <div class='row'>\
             <div class='col s12 m4 l4'>\
-                <img @click='' :src='image' alt='image'>\
+                <div class='canvas'>\
+                    <canvas id='img-canvas'></canvas>\
+                    <img :src='image' class='responsive-img hide' alt='image'>\
+                </div>\
             </div>\
             <div class='col s12 m8 l8'>\
                 <div class='input-field'>\
-                    <input type='file'>\
-                    <input v-model='name' type='text' name='name' id='name' placeholder='Name' autocomplete='off'>\
-                    <input type='text' name='slug' id='slug' :value='createslug' disabled>\
+                    <div class='input-field'>\
+                        <input @change='getfile' type='file'>\
+                    </div>\
+                    <div class='input-field'>\
+                        <input v-model='name' type='text' name='name' id='name' placeholder='Name' autocomplete='off'>\
+                    </div>\
+                    <div class='input-field'>\
+                        <input type='text' name='slug' id='slug' :value='createslug' disabled>\
+                    </div>\
                 </div>\
                 <div class='input-field'>\
                     <p>\
@@ -42,12 +73,74 @@ var imageupload = {
         return {
             name: "",
             mainimage: false,
-            image: "https://dummyimage.com/150x150/fff/aaa"
+            image: "https://dummyimage.com/800x800/fff/aaa"
         }
     },
     computed: {
         createslug() {
             return this.$data.name.replace(" ", "-")
+        }
+    },
+    methods: {
+        getbase64image: function(imgtag) {
+            // This final section draws the image
+            // within a canvas
+            // const canvas = document.createElement("canvas")
+            const canvas = document.getElementById("img-canvas")
+            canvas.width = 300
+            canvas.height = 300
+            // canvas.width = imgtag.width;
+            // canvas.height = imgtag.height;
+            
+            const context = canvas.getContext("2d")
+            context.drawImage(imgtag, 0, 0)
+
+            const dataurl = canvas.toDataURL("image/png")
+            
+            return dataurl
+        },
+        readimage: function(file) {
+            // This section reads the image file
+            // and returns an image URL
+            var self = this
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader()
+                const imgtag = document.createElement("img")
+
+                reader.onload = function() {
+                    imgtag.src = reader.result
+                    resolve(self.getbase64image(imgtag))
+                }
+                reader.readAsDataURL(file)
+            })
+        },
+        fakeupload: function(formdata) {
+            // Fakes the upload of the files
+            // to the server but instead just
+            // reads the file in order to draw
+            // it to a canvas
+            const images = formdata.getAll("image")
+            const promises = images.map((item) => this.readimage(item).then(item => ({
+                id: item,
+                originalName: item.name,
+                fileName: item.name,
+                url: item
+            })))
+            // console.log(Promise.all(promises))
+            return Promise.all(promises)
+        },
+        getfile: function(event) {
+            // Loads the files from the input
+            // and transforms them to a form
+            // data that can eventually be sent
+            var formdata = new FormData()
+            var fileslist = event.target.files
+
+            Object.keys(fileslist).forEach(key => {
+                var image = fileslist[key]
+                formdata.append("image", image, image["name"])
+            })
+            this.fakeupload(formdata)
         }
     }
 }
